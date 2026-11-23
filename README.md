@@ -64,6 +64,14 @@ The complete buildable source structure is still being assembled from the intern
 - **Duration:** May 2024 – June 2024
 - **Domain:** Software Development and Network Programming
 
+## Project Status
+
+- Source code organized into separate client and server modules.
+- Built using C++ and Qt Network concepts.
+- Uses TCP/IP socket communication.
+- CMake build configuration added.
+- Compilation and runtime testing are pending.
+
 ## Author
 
 **Koushik Gurram**
