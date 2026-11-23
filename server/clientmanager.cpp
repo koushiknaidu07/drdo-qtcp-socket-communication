@@ -5,10 +5,10 @@
 #include <QDateTime>
 #include <QFile>
 #include <QFileInfo>
-#include <QStandardPaths>
 
 ClientManager::ClientManager(QTcpSocket* client, QObject* parent)
-    : QObject{parent}, _client(client)
+    : QObject{parent},
+      _client(client)
 {
     connect(_client, &QTcpSocket::connected,
             this, &ClientManager::connected);
@@ -27,22 +27,14 @@ void ClientManager::uploadFile()
 
 void ClientManager::saveFile()
 {
-    QString directory =
-        QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+    QDir dir;
+    dir.mkdir(username());
 
-    QDir dir(directory);
-
-    QString username = this->username();
-    QString userDirectory = dir.filePath(username);
-
-    QDir().mkpath(userDirectory);
-
-    QString filename =
-        QString("%1_%2")
-        .arg(QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss"))
-        .arg(QFileInfo(_temp_filename).fileName());
-
-    QString path = QDir(userDirectory).filePath(filename);
+    QString path = QString("%1/%2/%3 %4")
+        .arg(dir.canonicalPath(),
+             username(),
+             QDateTime::currentDateTime().toString("yyyyMMdd_HHmmss"),
+             _protocol.filename());
 
     QFile file(path);
 
@@ -60,7 +52,7 @@ void ClientManager::connectToServer()
     _client->connectToHost(_ip, _port);
 }
 
-void ClientManager::sendMessage(const QString& message)
+void ClientManager::sendMessage(QString message)
 {
     _client->write(_protocol.textMessage(message));
 }
@@ -70,7 +62,7 @@ void ClientManager::sendIsTyping()
     _client->write(_protocol.isTypingMessage());
 }
 
-void ClientManager::sendName(const QString& name)
+void ClientManager::sendName(QString name)
 {
     _client->write(_protocol.setNameMessage(name));
 }
@@ -82,18 +74,16 @@ void ClientManager::sendStatus(MessageProtocol::Status status)
 
 QString ClientManager::username() const
 {
-    QString name = _protocol.username();
+    auto id = _client->property("id").toInt();
 
-    if (name.isEmpty())
-    {
-        return QString("Client_%1").arg(
-            _client->property("id").toInt());
-    }
+    auto name = _protocol.username().length() > 0
+        ? _protocol.username()
+        : QString("Client_%1").arg(id);
 
     return name;
 }
 
-void ClientManager::sendRequestUpload(const QString& filename)
+void ClientManager::sendRequestUpload(QString filename)
 {
     _temp_filename = filename;
     _client->write(_protocol.setRequestUploadMessage(filename));
@@ -113,8 +103,7 @@ void ClientManager::readyRead()
 {
     auto data = _client->readAll();
 
-    if (!_protocol.parseData(data))
-        return;
+    _protocol.parseData(data);
 
     switch (_protocol.type())
     {
@@ -131,13 +120,15 @@ void ClientManager::readyRead()
         break;
 
     case MessageProtocol::IsTyping:
-        emit isTyping();
+        emit otherSideisTyping();
         break;
 
     case MessageProtocol::RequestUpload:
-        _temp_filename = _protocol.filename();
-        emit fileUploadRequested(_protocol.username(),
-                                 _temp_filename);
+        emit fileRequestReceived(
+            _protocol.username(),
+            _protocol.filename(),
+            _protocol.filesize()
+        );
         break;
 
     case MessageProtocol::AcceptUpload:
@@ -145,11 +136,14 @@ void ClientManager::readyRead()
         break;
 
     case MessageProtocol::RejectUpload:
-        emit fileUploadRejected();
+        emit fileRejected();
         break;
 
     case MessageProtocol::Upload:
         saveFile();
+        break;
+
+    default:
         break;
     }
 }
