@@ -1,83 +1,104 @@
-# Seamless TCP Communication with QTcpSocket in Qt
+# Seamless TCP Communication with QTcpSocket in Qt Software
 
-A C++ and Qt-based client-server application developed during my internship at **Defence Research and Development Laboratory (DRDL), DRDO**.
+A C++ and Qt-based client-server communication application developed during my internship at the Defence Research and Development Laboratory (DRDL), DRDO, Hyderabad.
 
 ## Project Overview
 
-This project demonstrates TCP/IP socket programming using Qt's `QTcpSocket` and related networking classes. It provides graphical client and server applications for communication over a local network.
+This project focuses on developing a TCP-based client-server communication application using Qt software. It demonstrates communication between multiple clients and a server over a local network using TCP/IP and Qt's QTcpSocket and QTcpServer classes.
 
-## Key Features
+The application provides a graphical interface for exchanging text messages, managing client connections, displaying user status and handling file transfer requests.
 
-- TCP client-server connection
-- Real-time text message exchange
-- Multiple client connections to a server
-- File upload requests with accept/reject functionality
-- Client status updates (Available, Away and Busy)
-- Typing indicators
-- Connection and disconnection notifications
-- Graphical user interface using Qt Widgets
+## Features
 
-## Technologies Used
+- TCP-based client-server communication over a local network.
+- Text message exchange between connected clients.
+- Client username management.
+- User status management (Available, Busy and Away).
+- Typing status indication.
+- File transfer request and acceptance/rejection workflow.
+- Graphical user interface developed using Qt Widgets.
+- Server-side client connection management.
 
-- **Programming Language:** C++
-- **Framework:** Qt
-- **IDE:** Qt Creator
-- **Networking:** TCP/IP
-- **Qt Classes:** QTcpSocket, QTcpServer, QDataStream, QFile, QFileDialog
+## Technology Stack
 
-## Architecture
+| Component | Technology |
+|---|---|
+| Programming Language | C++ |
+| Framework | Qt |
+| GUI | Qt Widgets |
+| Networking | Qt Network |
+| Socket Communication | QTcpSocket, QTcpServer |
+| Communication Protocol | TCP/IP |
+| Build System | CMake |
+| Development Environment | Qt Creator |
 
-The application follows a client-server architecture:
+## Project Architecture
 
-1. The server listens for incoming TCP connections.
-2. Clients connect using the server IP address and port.
-3. Clients send messages and file-upload requests.
-4. The server handles client communication and file reception.
-5. The GUI displays connection status and communication activity.
+The application follows a client-server architecture.
 
-## Project Structure
+- **Client:** Connects to the server, sends and receives messages, manages user information and handles file transfer operations.
+- **Server:** Listens for incoming connections, manages connected clients and coordinates communication.
+- **Message Protocol:** Handles message types and data exchanged between clients and the server.
 
-The intended source organization includes:
+## Repository Structure
 
-- Client application
-- Server application
-- Client manager
-- Message protocol
-- Client chat widget
-- Main window and UI resources
-
-The complete buildable source structure is still being assembled from the internship report.
+```text
+drdo-qtcp-socket-communication/
+│
+├── client/
+│   ├── main.cpp
+│   ├── mainwindow.cpp
+│   ├── mainwindow.h
+│   ├── clientmanager.cpp
+│   ├── clientmanager.h
+│   ├── MessageProtocol.cpp
+│   └── messageprotocol.h
+│
+├── server/
+│   ├── main.cpp
+│   ├── mainwindow.cpp
+│   ├── mainwindow.h
+│   ├── clientmanager.cpp
+│   ├── clientmanager.h
+│   ├── clientchatwidget.cpp
+│   ├── clientchatwidget.h
+│   ├── servermanager.cpp
+│   ├── servermanager.h
+│   ├── messageprotocol.cpp
+│   └── messageprotocol.h
+│
+├── CMakeLists.txt
+├── .gitignore
+└── README.md
+```
 
 ## Learning Outcomes
 
-- Practical understanding of TCP/IP communication
-- C++ socket programming using Qt
-- Client-server application development
-- Signal-slot communication in Qt
-- File handling and data transmission
-- Debugging network communication
+Through this internship project, I gained exposure to:
 
-## Internship Details
-
-- **Organization:** DRDL, DRDO
-- **Project:** Seamless TCP Communication with QTcpSocket in Qt Software
-- **Duration:** May 2024 – June 2024
-- **Domain:** Software Development and Network Programming
+- C++ application development.
+- Qt framework and GUI development.
+- TCP/IP networking fundamentals.
+- Client-server communication architecture.
+- Socket programming using QTcpSocket.
+- Message handling and file transfer workflows.
+- Organizing modular C++ applications.
 
 ## Project Status
 
 - Source code organized into separate client and server modules.
-- Built using C++ and Qt Network concepts.
-- Uses TCP/IP socket communication.
 - CMake build configuration added.
 - Compilation and runtime testing are pending.
+- Further verification and refinement of the reconstructed source code are required.
 
-## Author
+## Internship Details
 
-**Koushik Gurram**
+**Organization:** Defence Research and Development Laboratory (DRDL), DRDO, Hyderabad
 
-[LinkedIn](https://in.linkedin.com/in/koushikgurram) | [GitHub](https://github.com/koushiknaidu07)
+**Internship Period:** 01 May 2024 – 28 June 2024
+
+**Project:** Seamless TCP Communication with QTcpSocket in Qt Software
 
 ---
 
-*This repository documents the internship project. Source files will be added and organized as the implementation is reconstructed and verified.*
+*Developed as part of my internship experience at DRDL, DRDO.*
