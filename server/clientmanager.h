@@ -18,11 +18,11 @@ public:
                            QObject* parent = nullptr);
 
     void connectToServer();
-    void sendMessage(const QString& message);
+    void sendMessage(QString message);
     void sendIsTyping();
-    void sendName(const QString& name);
+    void sendName(QString name);
     void sendStatus(MessageProtocol::Status status);
-    void sendRequestUpload(const QString& filename);
+    void sendRequestUpload(QString filename);
     void sendAcceptUpload();
     void sendRejectUpload();
 
@@ -31,14 +31,15 @@ public:
 signals:
     void connected();
     void disconnected();
-    void messageReceived(const QString& message);
-    void nameChanged(const QString& name);
+    void messageReceived(QString message);
+    void nameChanged(QString name);
     void statusChanged(MessageProtocol::Status status);
-    void isTyping();
-    void fileUploadRequested(const QString& username,
-                             const QString& filename);
-    void fileUploadRejected();
-    void fileSaved(const QString& path);
+    void otherSideisTyping();
+    void fileRequestReceived(QString username,
+                             QString filename,
+                             qint64 filesize);
+    void fileRejected();
+    void fileSaved(QString path);
 
 private slots:
     void readyRead();
